@@ -5,11 +5,9 @@ FROM node:18-alpine as builder
 WORKDIR /build
 
 # Copy package.json
-COPY package.json package-lock.json ./
-RUN npm i -g @angular/cli
-
-# Copy sources to the working directory
 COPY . .
+RUN yarn global add @angular/cli
+RUN yarn
 
 # Set the node environment
 ARG node_env=production
