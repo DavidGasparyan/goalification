@@ -4,7 +4,9 @@ import { AuthGuard } from "./guards/auth.guard";
 import { ContentComponent } from "./components/content/content.component";
 
 const routes: Routes = [
-  { path: '', component: ContentComponent , canActivate: [AuthGuard]},
+  { path: '',  canActivate: [AuthGuard], children: [
+      { path: '', component: ContentComponent },
+    ] },
   { path: '**', redirectTo: '' }
 ];
 @NgModule({
