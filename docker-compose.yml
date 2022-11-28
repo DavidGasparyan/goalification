@@ -1,0 +1,72 @@
+services:
+  keycloak:
+    image: jboss/keycloak
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres321
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin123
+      KEYCLOAK_LOGLEVEL: INFO
+      PROXY_ADDRESS_FORWARDING: 'true'
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres321
+    ports:
+      - '31432:5432'
+    healthcheck:
+      test: [ 'CMD-SHELL', 'psql postgres://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@localhost:5432/$${POSTGRES_DB} || exit 1' ]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+#      - .deploy/postgres/scripts/create_databases.sh:/docker-entrypoint-initdb.d/10-create_databases.sh:ro
+  ui:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.angular
+      args:
+        project: ui
+    ports:
+      - 8000:80
+    restart: on-failure
+    volumes:
+      - ui_vol:/usr/src/ui/
+      - node_modules:/usr/src/ui/node_modules/
+    networks:
+      - goalification
+  api:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.nest
+      args:
+        project: api
+    ports:
+      - 8003:3333
+    restart: on-failure
+    volumes:
+      - api_vol:/usr/src/api/
+      - node_modules:/usr/src/api/node_modules/
+    networks:
+      - goalification
+
+volumes:
+  ui_vol:
+  api_vol:
+  node_modules:
+  postgres_data:
+
+networks:
+  goalification:
+    driver: bridge

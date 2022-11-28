@@ -1,0 +1,36 @@
+# Start from node base image
+FROM node:18-alpine as builder
+
+# Set the current working directory inside the container
+WORKDIR /build
+
+# Copy package.json
+COPY package.json package-lock.json ./
+RUN npm i -g @angular/cli
+
+# Copy sources to the working directory
+COPY . .
+
+# Set the node environment
+ARG node_env=production
+ENV NODE_ENV $node_env
+
+# Build the Node.js app
+ARG project
+RUN ng build $project
+
+# Start a new stage from nginx
+FROM nginx:alpine
+WORKDIR /dist
+
+# Copy the build artifacts from the previous stage
+ARG project
+COPY --from=builder /build/dist/apps/$project /usr/share/nginx/html
+
+# Set the port number and expose it
+ARG port=80
+ENV PORT $port
+EXPOSE $port
+
+# Run nginx
+CMD ["nginx", "-g", "daemon off;"]
