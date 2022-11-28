@@ -13,6 +13,7 @@ export class AppComponent {
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit(): void {
+    console.log('update!');
     this.http.get<{ message: string }>('http://localhost:8003/api')
       .pipe(take(1), map(cur => cur.message))
       .subscribe(res => this.title = res);
