@@ -16,7 +16,7 @@ export class AppComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.keycloakService.getKeycloakInstance().realmAccess);
+    this.keycloakService.loadUserProfile().then(console.log);
     console.log('update!');
     // this.http.get<{ message: string }>('http://localhost:8003/api')
     //   .pipe(take(1), map(cur => cur.message))
