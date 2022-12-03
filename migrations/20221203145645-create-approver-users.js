@@ -2,18 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('user_goals', {
+    await queryInterface.createTable('approver_users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.STRING
+      approver_id: {
+        type: Sequelize.STRING(36),
+        references: {
+          model: 'user_entity',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
-      goals: {
-        type: Sequelize.STRING
+      users: {
+        type: Sequelize.TEXT('medium'),
       },
       createdAt: {
         allowNull: false,
@@ -26,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_goals');
+    await queryInterface.dropTable('approver_users');
   }
 };
