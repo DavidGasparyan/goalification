@@ -1,15 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { MatTableDataSource, MatTableDataSourcePaginator } from "@angular/material/table";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { MatSort, Sort } from "@angular/material/sort";
 import { IGoal } from "../../../../../../libs/interfaces/goal.interface";
 import { GoalService } from "../../services/goal.service";
-
-
-// const GOAL_DATA: IGoal[] = [
-//   {id: 1, name: 'Hydrogen', description: 'description', status: 'approved'},
-// ];
 
 @Component({
   selector: "goalification-goals",
