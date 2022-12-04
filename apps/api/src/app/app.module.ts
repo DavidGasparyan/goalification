@@ -3,6 +3,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GoalsModule } from "./goals/goals.module";
 
 @Module({
   imports: [
@@ -13,8 +14,10 @@ import { AppService } from './app.service';
       username: 'postgres',
       password: 'postgres321',
       database: 'postgres',
-      models: [],
+      autoLoadModels: true,
+      synchronize: true,
     }),
+    GoalsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
