@@ -31,12 +31,12 @@ export class Goal extends Model<Goal> {
     onUpdate: 'cascade',
     onDelete: 'cascade'
   })
-  user_id;
+  userId;
 
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
     allowNull: false
   })
-  is_deleted;
+  isDeleted;
 }

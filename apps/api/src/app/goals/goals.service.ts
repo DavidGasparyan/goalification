@@ -9,30 +9,40 @@ export class GoalsService {
 
   constructor(
     @InjectModel(Goal) private readonly goalModel: typeof Goal,
-  ) {
-  }
+  ) {}
 
-  create(createGoalDto: CreateGoalDto) {
+  create(createGoalDto: CreateGoalDto): Promise<Goal> {
     return this.goalModel.create<Goal>(createGoalDto);
   }
 
-  findAll(userId: string) {
+  findAll(userId: string): Promise<Goal[]> {
     return this.goalModel.findAll<Goal>({
       where: {
-        user_id: userId,
+        userId,
+      }
+    });
+  }
+
+  findOne(id: number): Promise<Goal> {
+    return this.goalModel.findOne<Goal>({
+      where: {
+        id,
       }
     })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} goal`;
-  }
-
   update(id: number, updateGoalDto: UpdateGoalDto) {
-    return `This action updates a #${id} goal`;
+    return this.goalModel.update<Goal>(
+      { ...updateGoalDto },
+      {
+        where: {
+          id,
+        }
+      })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} goal`;
+  async remove(id: number) {
+    await this.goalModel.update<Goal>( { isDeleted: true}, { where: { id } } );
+    return this.findOne(id);
   }
 }

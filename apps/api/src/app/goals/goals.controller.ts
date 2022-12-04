@@ -22,8 +22,8 @@ export class GoalsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.goalsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.goalsService.findOne(+id);
   }
 
   @Get()
