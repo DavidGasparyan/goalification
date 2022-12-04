@@ -1,40 +1,46 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
-import { MatTableDataSource } from '@angular/material/table';
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { MatTableDataSource, MatTableDataSourcePaginator } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
+import { LiveAnnouncer } from "@angular/cdk/a11y";
+import { MatSort, Sort } from "@angular/material/sort";
+import { IGoal } from "../../../../../../libs/interfaces/goal.interface";
+import { GoalService } from "../../services/goal.service";
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+// const GOAL_DATA: IGoal[] = [
+//   {id: 1, name: 'Hydrogen', description: 'description', status: 'approved'},
+// ];
 
 @Component({
-  selector: 'goalification-goals',
-  templateUrl: './goals.component.html',
-  styleUrls: ['./goals.component.scss'],
+  selector: "goalification-goals",
+  templateUrl: "./goals.component.html",
+  styleUrls: ["./goals.component.scss"]
 })
-export class GoalsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+export class GoalsComponent implements OnInit {
+  displayedColumns: string[] = ["id", "name", "description", "status"];
+  dataSource!: MatTableDataSource<IGoal>;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  constructor(
+    private readonly _liveAnnouncer: LiveAnnouncer,
+    private readonly _goalService: GoalService,
+  ) {}
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+
+  ngOnInit() {
+    this._goalService.get().subscribe(data => {
+      this.dataSource =  new MatTableDataSource<IGoal>(data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
   }
 
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
 }
