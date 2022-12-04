@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { KeycloakService } from "keycloak-angular";
+import { map, take } from "rxjs";
 
 @Component({
   selector: 'goalification-root',
@@ -16,10 +17,13 @@ export class AppComponent {
   ) {}
 
   ngOnInit(): void {
-    this.keycloakService.loadUserProfile().then(console.log);
-    console.log('update!');
-    // this.http.get<{ message: string }>('http://localhost:8003/api')
-    //   .pipe(take(1), map(cur => cur.message))
-    //   .subscribe(res => this.title = res);
+    // this.keycloakService.getToken().then(console.log)
+    // this.keycloakService.loadUserProfile().then(console.log);
+    // console.log('update!');
+
+    this.http.get('http://localhost:3333/api/goals', { params: {
+        userId: '73048a0f-e4d9-4650-b49f-8efc3340b0e5',
+      } })
+      .subscribe(console.log);
   }
 }

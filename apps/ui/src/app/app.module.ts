@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ContentComponent } from './components/content/content.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -17,13 +18,19 @@ function initializeKeycloak(keycloak: KeycloakService) {
       },
       initOptions: {
         onLoad: 'login-required',
-        flow: 'standard'
+        flow: 'standard',
       },
-      // initOptions: {
-      //   onLoad: 'check-sso',
-      //   silentCheckSsoRedirectUri:
-      //     window.location.origin + '/assets/silent-check-sso.html'
-      // },
+      shouldAddToken: (request) => {
+        const { method, url } = request;
+
+        const isGetRequest = 'GET' === method.toUpperCase();
+        const acceptablePaths = ['/assets', '/clients/public'];
+        const isAcceptablePathMatch = acceptablePaths.some((path) =>
+          url.includes(path)
+        );
+
+        return !(isGetRequest && isAcceptablePathMatch);
+      },
     });
 }
 
@@ -34,6 +41,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     AppRoutingModule,
     HttpClientModule,
     KeycloakAngularModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     {
