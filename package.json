@@ -26,6 +26,7 @@
     "@nestjs/sequelize": "^9.0.0",
     "@nrwl/angular": "15.2.1",
     "keycloak-angular": "^12.1.0",
+    "keycloak-connect": "^20.0.1",
     "keycloak-js": "^20.0.1",
     "nest-keycloak-connect": "^1.9.0",
     "pg": "^8.8.0",
