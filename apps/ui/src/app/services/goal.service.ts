@@ -20,7 +20,7 @@ export class GoalService {
 
     return profile$.pipe(
      map((profile: KeycloakProfile) => profile?.id || ''),
-     mergeMap(id => this._http.get<IGoal[]>('http://localhost:3333/api/goals', { params: { userId: id } }),
+     mergeMap(id => this._http.get<IGoal[]>('http://host.docker.internal:3333/api/goals', { params: { userId: id } }),
     ));
   }
 }

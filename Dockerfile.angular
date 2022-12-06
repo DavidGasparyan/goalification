@@ -23,12 +23,12 @@ WORKDIR /dist
 
 # Copy the build artifacts from the previous stage
 ARG project
-COPY --from=builder /build/dist/apps/$project /usr/share/nginx/html
 
-# Set the port number and expose it
-ARG port=80
-ENV PORT $port
-EXPOSE $port
+COPY ./nginx.angular.conf /etc/nginx/conf.d/angular.conf
+
+COPY --from=builder /build/dist/apps/$project /usr/share/nginx/html
 
 # Run nginx
 CMD ["nginx", "-g", "daemon off;"]
+
+EXPOSE 8000

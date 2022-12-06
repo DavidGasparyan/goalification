@@ -31,5 +31,6 @@ COPY --from=builder /build/dist/apps/$project .
 COPY package.json yarn.lock decorate-angular-cli.js ./
 RUN yarn
 
-# Run nginx
+EXPOSE 3333
+
 CMD ["node", "main.js"]
