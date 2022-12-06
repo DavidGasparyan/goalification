@@ -12,7 +12,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://host.docker.internal:8080/auth',
+        url: '/auth',
         realm: 'goalification',
         clientId: 'angular-app',
       },

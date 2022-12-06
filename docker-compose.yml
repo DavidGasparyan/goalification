@@ -10,14 +10,12 @@ services:
       DB_PASSWORD: postgres321
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin123
-      KEYCLOAK_LOGLEVEL: INFO
+      KEYCLOAK_LOGLEVEL: DEBUG
+      ROOT_LOGLEVEL: DEBUG
+      KC_PROXY: "edge"
       PROXY_ADDRESS_FORWARDING: 'true'
-      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
-      #JDBC_PARAMS: "ssl=true"
     ports:
       - 8080:8080
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
     networks:
@@ -35,11 +33,8 @@ services:
       test: [ 'CMD-SHELL', 'psql postgres://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@localhost:5432/$${POSTGRES_DB} || exit 1' ]
     networks:
       - goalification
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#      - .deploy/postgres/scripts/create_databases.sh:/docker-entrypoint-initdb.d/10-create_databases.sh:ro
   angular:
     build:
       context: ./
@@ -47,15 +42,13 @@ services:
       args:
         project: ui
     ports:
-      - 8000:8000
+      - 80:80
     restart: on-failure
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - goalification
     volumes:
-      - angular_vol:/usr/src/ui/
-      - node_modules:/usr/src/ui/node_modules/
+      - ./nginx.angular.conf:/etc/nginx/nginx.conf
+      - ./dist/apps/ui:/usr/share/nginx/html
   nest:
     build:
       context: ./
@@ -65,8 +58,7 @@ services:
     ports:
       - 3333:3333
     restart: on-failure
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    command: yarn start api
     environment:
       DB_HOST: postgres
       DB_NAME: postgres
@@ -79,14 +71,12 @@ services:
     networks:
       - goalification
     volumes:
-      - nest_vol:/usr/src/api/
-      - node_modules:/usr/src/api/node_modules/
+      - ./:/usr/src/api/
+      - /usr/src/api/node_modules/
   prometheus:
     image: prom/prometheus:latest
     networks:
       - goalification
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
@@ -97,8 +87,6 @@ services:
     image: grafana/grafana:latest
     networks:
       - goalification
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     container_name: monitoring_grafana
     restart: unless-stopped
     links:
@@ -120,8 +108,8 @@ services:
 ##      - 443:443
 #    networks:
 #      - goalification
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
+##    extra_hosts:
+##      - "host.docker.internal:host-gateway"
 #    volumes:
 #      - type: bind
 #        source: ./proxy/nginx.proxy.conf
@@ -134,9 +122,9 @@ services:
 #        target: /etc/ssl/private/app.key
 
 volumes:
-  angular_vol:
-  nest_vol:
-  node_modules:
+#  angular_vol:
+#  nest_vol:
+#  node_modules:
   postgres_data:
 
 networks:

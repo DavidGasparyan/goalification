@@ -10,7 +10,6 @@ import {
 import { GoalsService } from './goals.service';
 import { CreateGoalDto } from './dto/create-goal.dto';
 import { UpdateGoalDto } from './dto/update-goal.dto';
-import { Roles } from "nest-keycloak-connect";
 
 @Controller('goals')
 export class GoalsController {
@@ -27,7 +26,6 @@ export class GoalsController {
   }
 
   @Get()
-  @Roles( { roles: ['user']} )
   async findAll(@Query('userId') userId: string) {
     return await this.goalsService.findAll(userId);
   }
