@@ -1,0 +1,120 @@
+services:
+  keycloak:
+    image: jboss/keycloak
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres321
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin123
+      KEYCLOAK_LOGLEVEL: DEBUG
+      ROOT_LOGLEVEL: DEBUG
+      KC_PROXY: "edge"
+      PROXY_ADDRESS_FORWARDING: 'true'
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      goalification:
+        ipv4_address: 192.168.0.2
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres321
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ 'CMD-SHELL', 'psql postgres://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@localhost:5432/$${POSTGRES_DB} || exit 1' ]
+    networks:
+      goalification:
+        ipv4_address: 192.168.0.3
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  angular:
+    build:
+      context: ./
+      dockerfile: ./docker/dev/Dockerfile.dev.angular
+      args:
+        project: ui
+    ports:
+      - 80:80
+    restart: on-failure
+    networks:
+      goalification:
+        ipv4_address: 192.168.0.4
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./dist/apps/ui:/usr/share/nginx/html
+  nest:
+    build:
+      context: ./
+      dockerfile: ./docker/dev/Dockerfile.dev.nest
+      args:
+        project: api
+    ports:
+      - 3333:3333
+    restart: on-failure
+    command: yarn start api
+    environment:
+      DB_HOST: postgres
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres321
+      DB_PORT: 5432
+    depends_on:
+      - postgres
+    networks:
+      goalification:
+        ipv4_address: 192.168.0.5
+    volumes:
+      - ./:/usr/src/api/
+      - /usr/src/api/node_modules/
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - nest
+    ports:
+      - 9090:9090
+    networks:
+      goalification:
+        ipv4_address: 192.168.0.6
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:latest
+    container_name: monitoring_grafana
+    restart: unless-stopped
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=12345
+    networks:
+      goalification:
+        ipv4_address: 192.168.0.7
+    ports:
+      - 3000:3000
+
+volumes:
+#  angular_vol:
+#  nest_vol:
+#  node_modules:
+  postgres_data:
+
+networks:
+  goalification:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.0.0/16
+          gateway: 192.168.0.1

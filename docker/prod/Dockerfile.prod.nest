@@ -1,0 +1,23 @@
+FROM node:18-alpine as build
+ARG project
+
+WORKDIR /build
+COPY package.json yarn.lock decorate-angular-cli.js ./
+RUN yarn
+COPY . .
+
+RUN yarn build $project production
+
+FROM node:18-alpine
+ARG project
+
+WORKDIR /dist
+
+COPY --from=build /build/dist/apps/$project .
+COPY package.json yarn.lock decorate-angular-cli.js ./
+
+RUN yarn
+
+EXPOSE 3333
+
+CMD ["node", "main.js"]

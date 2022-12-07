@@ -1,0 +1,11 @@
+FROM node:18-alpine
+
+WORKDIR /usr/src/api
+
+COPY package.json yarn.lock decorate-angular-cli.js ./
+
+RUN yarn
+
+COPY . .
+
+RUN yarn build api

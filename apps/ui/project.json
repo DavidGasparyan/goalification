@@ -16,7 +16,10 @@
         "tsConfig": "apps/ui/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/ui/src/favicon.ico", "apps/ui/src/assets"],
-        "styles": ["apps/ui/src/styles.scss"],
+        "styles": [
+          "apps/ui/src/styles.scss",
+          "@angular/material/prebuilt-themes/deeppurple-amber.css"
+        ],
         "scripts": []
       },
       "configurations": {
