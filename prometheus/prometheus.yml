@@ -4,4 +4,4 @@ scrape_configs:
   - job_name: "api-metrics"
     metrics_path: /api/metrics
     static_configs:
-      - targets: ["host.docker.internal:3333"]
+      - targets: ["192.168.0.5:3333"]

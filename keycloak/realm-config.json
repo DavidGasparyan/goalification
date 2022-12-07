@@ -52,9 +52,6 @@
         "composite": true,
         "composites": {
           "client": {
-            "nest-app": [
-              "user"
-            ],
             "angular-app": [
               "user"
             ]
@@ -110,9 +107,6 @@
         "composite": true,
         "composites": {
           "client": {
-            "nest-app": [
-              "admin"
-            ],
             "angular-app": [
               "admin"
             ]
@@ -124,26 +118,6 @@
       }
     ],
     "client": {
-      "nest-app": [
-        {
-          "id": "2ab35893-229d-4786-850b-614358b8111d",
-          "name": "admin",
-          "description": "users that usually have administrative access",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "0f518fbd-d8af-4aa2-a401-0a7924ec7bfd",
-          "attributes": {}
-        },
-        {
-          "id": "e094a459-7cde-4698-8842-cd929c0c2fb4",
-          "name": "user",
-          "description": "basic users that can create goals and navigate the application",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "0f518fbd-d8af-4aa2-a401-0a7924ec7bfd",
-          "attributes": {}
-        }
-      ],
       "realm-management": [
         {
           "id": "30428f19-0355-44a5-8187-34d020c63c59",
@@ -668,17 +642,17 @@
     {
       "id": "c20d1365-e258-4cfa-a887-427ad396d67b",
       "clientId": "angular-app",
-      "rootUrl": "http://localhost:80",
-      "adminUrl": "http://localhost:80",
+      "rootUrl": "",
+      "adminUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:80/*"
+        "*"
       ],
       "webOrigins": [
-        "http://localhost:80"
+        ""
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -699,7 +673,7 @@
         "saml.server.signature.keyinfo.ext": "false",
         "use.refresh.tokens": "true",
         "oidc.ciba.grant.enabled": "false",
-        "use.jwks.string": "true",
+        "use.jwks.string": "false",
         "backchannel.logout.session.required": "true",
         "client_credentials.use_refresh_token": "false",
         "require.pushed.authorization.requests": "false",
@@ -756,67 +730,6 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
-      "defaultClientScopes": [
-        "web-origins",
-        "roles",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access",
-        "microprofile-jwt"
-      ]
-    },
-    {
-      "id": "0f518fbd-d8af-4aa2-a401-0a7924ec7bfd",
-      "clientId": "nest-app",
-      "surrogateAuthRequired": false,
-      "enabled": true,
-      "alwaysDisplayInConsole": false,
-      "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
-      "redirectUris": [],
-      "webOrigins": [],
-      "notBefore": 0,
-      "bearerOnly": true,
-      "consentRequired": false,
-      "standardFlowEnabled": true,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
-      "serviceAccountsEnabled": false,
-      "publicClient": false,
-      "frontchannelLogout": false,
-      "protocol": "openid-connect",
-      "attributes": {
-        "id.token.as.detached.signature": "false",
-        "saml.assertion.signature": "false",
-        "saml.force.post.binding": "false",
-        "saml.multivalued.roles": "false",
-        "saml.encrypt": "false",
-        "token.endpoint.auth.signing.alg": "ES256",
-        "oauth2.device.authorization.grant.enabled": "false",
-        "backchannel.logout.revoke.offline.tokens": "false",
-        "saml.server.signature": "false",
-        "saml.server.signature.keyinfo.ext": "false",
-        "use.refresh.tokens": "true",
-        "exclude.session.state.from.auth.response": "false",
-        "oidc.ciba.grant.enabled": "false",
-        "saml.artifact.binding": "false",
-        "backchannel.logout.session.required": "true",
-        "client_credentials.use_refresh_token": "false",
-        "saml_force_name_id_format": "false",
-        "require.pushed.authorization.requests": "false",
-        "saml.client.signature": "false",
-        "tls.client.certificate.bound.access.tokens": "false",
-        "saml.authnstatement": "false",
-        "display.on.consent.screen": "false",
-        "saml.onetimeuse.condition": "false"
-      },
-      "authenticationFlowBindingOverrides": {},
-      "fullScopeAllowed": true,
-      "nodeReRegistrationTimeout": -1,
       "defaultClientScopes": [
         "web-origins",
         "roles",
@@ -2280,12 +2193,18 @@
   "dockerAuthenticationFlow": "docker auth",
   "attributes": {
     "cibaBackchannelTokenDeliveryMode": "poll",
-    "cibaExpiresIn": "120",
     "cibaAuthRequestedUserHint": "login_hint",
-    "oauth2DeviceCodeLifespan": "600",
     "oauth2DevicePollingInterval": "5",
+    "clientOfflineSessionMaxLifespan": "0",
+    "clientSessionIdleTimeout": "0",
+    "userProfileEnabled": "false",
+    "clientOfflineSessionIdleTimeout": "0",
+    "cibaInterval": "5",
+    "cibaExpiresIn": "120",
+    "oauth2DeviceCodeLifespan": "600",
     "parRequestUriLifespan": "60",
-    "cibaInterval": "5"
+    "clientSessionMaxLifespan": "0",
+    "frontendUrl": "http://localhost/auth"
   },
   "keycloakVersion": "16.1.1",
   "userManagedAccessAllowed": false,
