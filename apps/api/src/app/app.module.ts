@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AuthGuard, KeycloakConnectModule, ResourceGuard, RoleGuard } from "nest-keycloak-connect";
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GoalsModule } from './goals/goals.module';
 import { MetricsModule } from './metrics/metrics.module';
+import { HttpModule } from "@nestjs/axios";
 
 @Module({
   imports: [
@@ -18,12 +21,33 @@ import { MetricsModule } from './metrics/metrics.module';
       autoLoadModels: true,
       synchronize: true,
     }),
+    KeycloakConnectModule.register({
+      authServerUrl: process.env.KEYCLOAK_AUTH_URL,
+      realm: process.env.KEYCLOAK_REALM,
+      clientId: process.env.KEYCLOAK_CLIENT_ID,
+      secret: process.env.KEYCLOAK_CLIENT_SECRET,
+    }),
     GoalsModule,
     MetricsModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ResourceGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
   ],
 })
-export class AppModule {}
+export class AppModule {
+
+}

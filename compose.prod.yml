@@ -43,6 +43,8 @@ services:
         project: ui
     ports:
       - 80:80
+    hostname: goalification.click
+    domainname: goalification.click
     restart: on-failure
     networks:
       goalification:
@@ -51,6 +53,8 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - angular_vol:/usr/src/ui/
       - node_modules:/usr/src/ui/node_modules/
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
   nest:
     build:
       context: ./
@@ -64,6 +68,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres321
       DB_PORT: 5432
+      KEYCLOAK_AUTH_URL: 'http://goalification.click/auth'
+      KEYCLOAK_REALM: goalification
+      KEYCLOAK_CLIENT_ID: nest-app
+      KEYCLOAK_CLIENT_SECRET: xcrB5tLqWTSwbbhQa8f3g11WvyVESXlw
     depends_on:
       - postgres
     volumes:
@@ -100,6 +108,13 @@ services:
         ipv4_address: 192.168.0.7
     volumes:
       - ./data/grafana:/var/lib/grafana
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email davidgasparyang@gmail.com -d goalification.click --agree-tos
 
 volumes:
   angular_vol:

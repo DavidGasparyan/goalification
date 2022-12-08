@@ -1,6 +1,17 @@
-FROM nginx:alpine AS development
+FROM node:18-alpine AS builder
 
-COPY ./dist/apps/ui /usr/share/nginx/html
+WORKDIR /usr/src/ui
+
+COPY package.json yarn.lock decorate-angular-cli.js ./
+
+RUN yarn
+
+COPY . .
+
+RUN yarn build ui
+
+FROM nginx:alpine
+COPY --from=builder ./usr/src/ui/dist/apps/ui /usr/share/nginx/html
 
 EXPOSE 80
 
