@@ -43,6 +43,9 @@ services:
         project: ui
     ports:
       - 80:80
+    depends_on:
+      - nest
+      - keycloak
     hostname: goalification.click
     domainname: goalification.click
     restart: on-failure
@@ -97,6 +100,8 @@ services:
     image: grafana/grafana:latest
     container_name: monitoring_grafana
     restart: unless-stopped
+    depends_on:
+      - prometheus
     links:
       - prometheus:prometheus
     environment:
@@ -111,10 +116,12 @@ services:
   certbot:
     image: certbot/certbot
     container_name: certbot
+    depends_on:
+      - angular
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email davidgasparyang@gmail.com -d goalification.click --agree-tos
+    command: certonly --reinstall --webroot -w /var/www/certbot --force-renewal --email davidgasparyang@gmail.com -d goalification.click --agree-tos
 
 volumes:
   angular_vol:
