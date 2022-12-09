@@ -104,19 +104,26 @@ services:
       - prometheus:prometheus
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=12345
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=postgres:5432
+      - GF_DATABASE_NAME=postgres
+      - GF_DATABASE_USER=postgres
+      - GF_DATABASE_PASSWORD=postgres321
+      - GF_DATABASE_SSL_MODE=disable
     ports:
       - 3000:3000
     networks:
       goalification:
         ipv4_address: 192.168.0.7
     volumes:
-      - ./data/grafana:/var/lib/grafana
+      -  grafana-storage:/var/lib/grafana
 
 volumes:
   angular_vol:
   nest_vol:
   node_modules:
   postgres_data:
+  grafana-storage:
 
 networks:
   goalification:
