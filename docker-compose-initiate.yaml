@@ -11,7 +11,7 @@ services:
     volumes:
       - ./nginx/prod/nginx.init.default.conf:/etc/nginx/templates/default.conf.template
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./certbot/data:/var/www/certbot
   certbot:
     container_name: certbot
     image: certbot/certbot:latest
@@ -23,4 +23,4 @@ services:
       -d goalification.click
     volumes:
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./certbot/data:/var/www/certbot

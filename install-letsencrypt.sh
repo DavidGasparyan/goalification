@@ -11,4 +11,4 @@ openssl dhparam -out etc/letsencrypt/ssl-dhparams.pem 2048
 
 # Phase 2
 crontab ./crontab
-docker-compose -f ./compose.prod.yml -d up
+docker-compose -f ./compose.prod.yml up -d

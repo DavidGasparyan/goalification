@@ -57,7 +57,7 @@ services:
       - angular_vol:/usr/src/ui/
       - node_modules:/usr/src/ui/node_modules/
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./certbot/data:/var/www/certbot
   nest:
     build:
       context: ./
@@ -120,7 +120,7 @@ services:
       - angular
     volumes:
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./certbot/data:/var/www/certbot
     command: certonly --reinstall --webroot -w /var/www/certbot --force-renewal --email davidgasparyang@gmail.com -d goalification.click --agree-tos
 
 volumes:
