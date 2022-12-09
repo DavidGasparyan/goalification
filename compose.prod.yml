@@ -111,7 +111,7 @@ services:
         ipv4_address: 192.168.0.7
     volumes:
       - ./data/grafana:/var/lib/grafana
-      -
+
 volumes:
   angular_vol:
   nest_vol:
