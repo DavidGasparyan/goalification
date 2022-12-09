@@ -1,2 +1,0 @@
-# m h  dom mon dow   command
-0 5  * * *  /home/ubuntu/goalification/cron.sh
