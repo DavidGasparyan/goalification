@@ -1,3 +1,5 @@
+version: "3"
+
 services:
   nginx:
     container_name: nginx
@@ -5,7 +7,7 @@ services:
     environment:
       DOMAIN: goalification.click
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - ./nginx/prod/nginx.init.default.conf:/etc/nginx/templates/default.conf.template
       - ./certbot/conf:/etc/letsencrypt
@@ -20,5 +22,5 @@ services:
       --email davidgasparyang@gmail.com --agree-tos --no-eff-email
       -d goalification.click
     volumes:
-      -- ./certbot/conf:/etc/letsencrypt
+      - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
