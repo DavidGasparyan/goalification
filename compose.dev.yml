@@ -105,7 +105,6 @@ services:
       - ./data/grafana:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=12345
-      - GF_SECURITY_ADMIN_PASSWORD=12345
       - GF_DATABASE_TYPE=postgres
       - GF_DATABASE_HOST=postgres:5432
       - GF_DATABASE_NAME=postgres
