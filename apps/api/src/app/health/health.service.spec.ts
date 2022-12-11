@@ -1,18 +1,39 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthService } from './health.service';
 
-describe('HealthService', () => {
-  let service: HealthService;
+class HealthServiceMock {
+  check() {
+    return
+  }
+}
 
-  beforeEach(async () => {
+describe('HealthService', () => {
+  let healthService: HealthService;
+
+  beforeAll(async () => {
+    const HealthServiceProvider = {
+      provide: HealthService,
+      useClass: HealthServiceMock,
+    }
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HealthService],
+      providers: [
+        HealthService, HealthServiceProvider
+      ],
     }).compile();
 
-    service = module.get<HealthService>(HealthService);
-  });
+    healthService = module.get<HealthService>(HealthService);
+  })
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(healthService).toBeDefined();
+  });
+
+  it('should call check method with expected params', async () => {
+    const checkHealth = jest.spyOn(healthService, 'check');
+
+    await healthService.check();
+
+    expect(checkHealth).toHaveBeenCalledWith();
   });
 });
