@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_SECRET }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            mkdir -p ${{ secrets.PROJECT_PATH }} && cd "$_"
+            cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
             make down
             make build
