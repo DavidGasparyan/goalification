@@ -24,7 +24,7 @@ jobs:
           # SSH port
           port: ${{ secrets.SSH_PORT }}
           # passphrase
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
