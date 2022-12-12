@@ -17,7 +17,7 @@ jobs:
             cd ${{ secrets.PROJECT_PATH }}
             echo "${{ secrets.ENV }}" > .env
             git pull origin main
-            docker compose down
+            docker compose -f compose.prod.yml down
             docker compose -f compose.prod.yml --env-file ./.env up --build -d --remove-orphans
             echo "Deleting old image(s)..."
             docker image prune -a -f
