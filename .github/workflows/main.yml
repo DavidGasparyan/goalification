@@ -13,7 +13,7 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         env:
-          KEYCLOAK_AUTH_URL: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
+          KEYCLOAK_AUTH_URL: ${{ secrets.KEYCLOAK_AUTH_URL }}
           KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
         with:
           host: ${{ secrets.SSH_HOST }}
