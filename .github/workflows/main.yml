@@ -23,7 +23,7 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
-            make down
-            make build
+            docker compose down
+            docker compose -f compose.prod.yml up --build -d --remove-orphans
             echo "Deleting old image(s)..."
             docker image prune -a -f
