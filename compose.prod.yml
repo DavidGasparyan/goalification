@@ -74,10 +74,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres321
       DB_PORT: 5432
-      KEYCLOAK_AUTH_URL: 'http://goalification.click/auth'
+      KEYCLOAK_AUTH_URL: ${KEYCLOAK_AUTH_URL}
       KEYCLOAK_REALM: goalification
       KEYCLOAK_CLIENT_ID: nest-app
-      KEYCLOAK_CLIENT_SECRET: xcrB5tLqWTSwbbhQa8f3g11WvyVESXlw
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
     depends_on:
       - postgres
     volumes:
