@@ -3,9 +3,9 @@ build:
 up:
         docker compose -f compose.prod.yml up -d
 down:
-        docker compose down
+        docker compose -f compose.prod.yml down
 prune:
         docker image prune -a -f
 show_logs:
-        docker compose logs
+        docker compose -f compose.prod.yml logs
 
