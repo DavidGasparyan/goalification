@@ -17,6 +17,8 @@ jobs:
             cd ${{ secrets.PROJECT_PATH }}
             echo "${{ secrets.ENV }}" > .env
             git pull origin main
+            chmod +x ./install-letsencrypt.sh
+            chmod -R 755 ./certbot
             docker compose -f compose.prod.yml down
             docker compose -f compose.prod.yml --env-file ./.env up --build -d --remove-orphans
             echo "Deleting old image(s)..."
