@@ -12,14 +12,14 @@ jobs:
     steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
+        env:
+          KEYCLOAK_AUTH_URL: ${{ secrets.KEYCLOAK_AUTH_URL }}
+          KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_SECRET }}
           port: ${{ secrets.SSH_PORT }}
-          env:
-            KEYCLOAK_AUTH_URL: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
-            KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
