@@ -1,11 +1,11 @@
 build:
-		docker compose -f compose.prod.yml up --build -d --remove-orphans
+	docker compose -f compose.prod.yml up --build -d --remove-orphans
 up:
-		docker compose -f compose.prod.yml up -d
+	docker compose -f compose.prod.yml up -d
 down:
-		docker compose -f compose.prod.yml down
+	compose -f compose.prod.yml down
 prune:
-		docker image prune -a -f
+	image prune -a -f
 show_logs:
-		docker compose -f compose.prod.yml logs
+	docker compose -f compose.prod.yml logs
 
