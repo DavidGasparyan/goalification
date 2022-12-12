@@ -13,18 +13,13 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          # VPS IP
           host: ${{ secrets.SSH_HOST }}
-
-          # VPS username
           username: ${{ secrets.SSH_USERNAME }}
-
-          # SSH key (copy it from your local machine)
           key: ${{ secrets.SSH_SECRET }}
-          # SSH port
           port: ${{ secrets.SSH_PORT }}
-          # passphrase
-#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          env:
+            KEYCLOAK_AUTH_URL: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
+            KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
