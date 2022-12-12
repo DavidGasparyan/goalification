@@ -6,30 +6,29 @@ on:
   pull_request:
     branches: [main]
   # Run this workflow manually from the Actions tab on Repo homepage
-workflow_dispatch:
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Deploy to VPS
-          uses: appleboy/ssh-action@master
-          with:
-            # VPS IP
-            host: ${{ secrets.SSH_HOST }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          # VPS IP
+          host: ${{ secrets.SSH_HOST }}
 
-            # VPS username
-            username: ${{ secrets.SSH_USERNAME }}
+          # VPS username
+          username: ${{ secrets.SSH_USERNAME }}
 
-            # SSH key (copy it from your local machine)
-            key: ${{ secrets.SSH_SECRET }}
-            # SSH port
-            port: ${{ secrets.SSH_PORT }}
-            # passphrase
-            passphrase: ${{ secrets.SSH_PASSPHRASE }}
-            script: |
-              cd ${{ secrets.PROJECT_PATH }}
-              git pull origin main
-              make down
-              make build
-              echo "Deleting old image(s)..."
-              docker image prune -a -f
+          # SSH key (copy it from your local machine)
+          key: ${{ secrets.SSH_SECRET }}
+          # SSH port
+          port: ${{ secrets.SSH_PORT }}
+          # passphrase
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ${{ secrets.PROJECT_PATH }}
+            git pull origin main
+            make down
+            make build
+            echo "Deleting old image(s)..."
+            docker image prune -a -f
