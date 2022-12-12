@@ -7,12 +7,4 @@
     "target": "http://localhost:3333",
     "secure": false
   },
-  "/monitoring": {
-    "target": "http://localhost:3000",
-    "secure": false
-  },
-  "/prometheus": {
-    "target": "http://localhost:9090",
-    "secure": false
-  }
 }
