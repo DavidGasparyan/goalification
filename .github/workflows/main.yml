@@ -1,20 +1,17 @@
 name: Bot CI-CD
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-  # Run this workflow manually from the Actions tab on Repo homepage
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Create env file'
+        run: |
+          cd ${{ secrets.PROJECT_PATH }}
+          echo "${{ secrets.ENV }}" > .env
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
-        env:
-          KEYCLOAK_AUTH_URL: ${{ secrets.KEYCLOAK_AUTH_URL }}
-          KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -24,6 +21,6 @@ jobs:
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
             docker compose down
-            docker compose -f compose.prod.yml --env-file ${{secrets.ENV}} up --build -d --remove-orphans
+            docker compose -f compose.prod.yml --env-file ./env up --build -d --remove-orphans
             echo "Deleting old image(s)..."
             docker image prune -a -f
