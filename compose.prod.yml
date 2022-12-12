@@ -55,8 +55,8 @@ services:
         ipv4_address: 192.168.0.4
     volumes:
 #     Once HTTPS: 443 port enabled in firewall
-      - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf
-#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+#      - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - angular_vol:/usr/src/ui/
       - node_modules:/usr/src/ui/node_modules/
       - ./certbot/conf:/etc/letsencrypt
@@ -74,10 +74,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres321
       DB_PORT: 5432
-      KEYCLOAK_AUTH_URL: 'http://goalification.click/auth'
+      KEYCLOAK_AUTH_URL: ${KEYCLOAK_AUTH_URL}
       KEYCLOAK_REALM: goalification
       KEYCLOAK_CLIENT_ID: nest-app
-      KEYCLOAK_CLIENT_SECRET: xcrB5tLqWTSwbbhQa8f3g11WvyVESXlw
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
     depends_on:
       - postgres
     volumes:
