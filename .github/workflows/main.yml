@@ -32,4 +32,3 @@ jobs:
             make build
             echo "Deleting old image(s)..."
             docker image prune -a -f
-            make up
