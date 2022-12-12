@@ -6,10 +6,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Create env file'
-        run: |
-          cd ${{ secrets.PROJECT_PATH }}
-          echo "${{ secrets.ENV }}" > .env
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
@@ -19,6 +15,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
+            echo "${{ secrets.ENV }}" > .env
             git pull origin main
             docker compose down
             docker compose -f compose.prod.yml --env-file ./env up --build -d --remove-orphans
