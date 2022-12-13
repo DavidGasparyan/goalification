@@ -44,7 +44,7 @@ export class CreateGoalComponent implements OnInit {
 
   submit() {
     if (this.goalCreateForm.valid) {
-      const goal: IGoal = {
+      const goal: Partial<IGoal> = {
         description: this.getDescriptionValue(),
         name: this.getNameValue(),
       }

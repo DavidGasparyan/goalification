@@ -30,7 +30,7 @@ export class GoalService {
     });
   }
 
-  create(goal: IGoal) {
+  create(goal: Partial<IGoal>) {
     this._profile$
       .pipe(
         map((profile: KeycloakProfile) => profile?.id || ''),
