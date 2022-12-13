@@ -23,7 +23,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
+        url: '/auth',
         realm: 'goalification',
         clientId: 'angular-app',
       },
