@@ -1,0 +1,37 @@
+.container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.content {
+  padding: 0 80px;
+  margin: 0;
+}
+
+.sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 460px;
+  background: rgba(255, 0, 0, 0.5);
+  padding: 80px 60px;
+}
+
+.header,
+.footer {
+ height: 60px;
+}
+
+.body {
+  height: calc(100% - 120px);
+}
+
+.menu-icon {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 999;
+}

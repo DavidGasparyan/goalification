@@ -1,13 +1,35 @@
-<header class="flex">
-  <img
-    alt="Nx logo"
-    width="75"
-    src="https://angular.io/assets/images/logos/angular/angular.svg"
-  />
-  <h1>Welcome to {{ title }}!</h1>
-</header>
-<main>
-  <h2>Message from UI</h2>
-  <p>{{ title }}</p>
-</main>
-<router-outlet></router-outlet>
+<button
+  (click)="sidenav.toggle()"
+  mat-fab
+  color="primary"
+  class="menu-icon"
+  aria-label="menu icon">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav" fixedInViewport>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let link of links" [routerLink]="link.route">
+        <span matListItemTitle >{{ link.description }}</span>
+        <button mat-icon-button matListItemMeta>
+          <mat-icon>info</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar class="header">
+      Goalification
+    </mat-toolbar>
+
+    <div class="body">
+      <router-outlet></router-outlet>
+    </div>
+
+    <mat-toolbar class="footer">
+      <p class="footer-text">&copy; Copyright {{ getYear() }} by <a href="https://goalification.click">goalification.click</a></p>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

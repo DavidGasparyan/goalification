@@ -6,20 +6,31 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ContentComponent } from './components/content/content.component';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { RouterModule } from '@angular/router';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from "@angular/material/dialog";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: '/auth',
+        url: 'http://localhost:8080/auth',
         realm: 'goalification',
         clientId: 'angular-app',
       },
       initOptions: {
         onLoad: 'login-required',
         flow: 'standard',
-        checkLoginIframe: false
+        checkLoginIframe: false,
       },
       shouldAddToken: (request) => {
         const { method, url } = request;
@@ -43,6 +54,18 @@ function initializeKeycloak(keycloak: KeycloakService) {
     HttpClientModule,
     KeycloakAngularModule,
     BrowserAnimationsModule,
+    MatSidenavModule,
+    MatCheckboxModule,
+    FormsModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatIconModule,
+    MatListModule,
+    RouterModule,
+    MatDialogModule,
   ],
   providers: [
     {
@@ -51,6 +74,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       multi: true,
       deps: [KeycloakService],
     },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } },
   ],
   bootstrap: [AppComponent],
 })
