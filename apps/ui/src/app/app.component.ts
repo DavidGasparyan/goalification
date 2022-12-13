@@ -7,7 +7,28 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ui';
+  links = [
+    {
+      route: ['/'],
+      description: 'Home',
+    },
+    {
+      route: ['/goals'],
+      description: 'Goals',
+    },
+    {
+      route: ['/approves'],
+      description: 'Approves',
+    },
+  ]
 
-  constructor(
-  ) {}
+  getYear() {
+    const date = new Date();
+
+    return date.getFullYear();
+  }
+
+  showInfo(link: any) {
+
+  }
 }

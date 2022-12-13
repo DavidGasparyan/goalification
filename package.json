@@ -32,6 +32,7 @@
     "keycloak-angular": "^12.1.0",
     "keycloak-connect": "^20.0.1",
     "keycloak-js": "^20.0.1",
+    "material-design-icons": "^3.0.1",
     "nest-keycloak-connect": "^1.9.0",
     "pg": "^8.8.0",
     "prom-client": "^14.1.0",
